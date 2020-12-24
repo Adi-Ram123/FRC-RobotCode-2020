@@ -8,8 +8,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -25,6 +31,13 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private SpeedController leftUp, leftDown, rightUp, rightDown;
+  private SpeedControllerGroup left, right;
+  private DifferentialDrive drive;
+  private DriveTrain driveTrain;
+  private Joystick joy; 
+  
+
 
 
   /**
@@ -32,6 +45,21 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+    leftUp = new SteelTalonsController(0, false, 1);
+    leftDown = new SteelTalonsController(1, false, 1);
+    rightUp = new SteelTalonsController(2, false, 1);
+    rightDown = new SteelTalonsController(3, false, 1);
+
+    left = new SpeedControllerGroup(leftUp, leftDown);
+    right = new SpeedControllerGroup(rightUp, rightDown);
+
+    drive = new DifferentialDrive(left, right);
+
+    driveTrain = new DriveTrain(left, right, drive);
+
+    driveTrain.setDefaultCommand(new DriveWithJoystick());
+
+
     configureButtonBindings();
   }
 
@@ -41,7 +69,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
+  private void configureButtonBindings() 
+  {
+    joy = new Joystick(0);
   }
 
 
@@ -54,4 +84,15 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
+   public DriveTrain getDriveTrain()
+   {
+     return driveTrain;
+   }
+
+   public Joystick getJoystick()
+   {
+     return joy;
+   }
+
 }
