@@ -26,6 +26,7 @@ public final class Constants
 
     public static final int RIGHT_DOWN_PORT = 3;
 
+
     public static final int INTAKE_LEFT_PORT = 4;
 
     public static final int INTAKE_RIGHT_PORT = 5;
@@ -37,5 +38,20 @@ public final class Constants
     public static final double INTAKE_IN_SPEED = 0.5;
 
     public static final double INTAKE_OUT_SPEED = -0.8;
+
+
+    public static final int ARM_POTENT_PORT = 6;
+
+    public static final int ARM_CONTROL_PORT = 9;
+
+    public static final double ARM_TOP = 69;
+
+    public static final double ARM_BOTTOM = 109.5;
+
+    public static final int ARM_UP_BUTTON = 10;
+
+    public static final int ARM_DOWN_BUTTON = 11;
+
+    public static final double ARM_CONTROL_SPEED = 0.5;
 
 }

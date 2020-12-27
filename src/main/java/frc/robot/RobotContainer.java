@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -15,7 +16,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.MoveArm;
 import frc.robot.commands.MoveIntake;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
@@ -41,10 +44,16 @@ public class RobotContainer {
   private DriveTrain driveTrain;
 
   private SpeedController intakeLeft, intakeRight;
+  private Button intakeIn, intakeOut; 
   private Intake intake;
 
+  private AnalogPotentiometer armPotent;
+  private SpeedController armController;
+  private Arm arm;
+  private Button armUp, armDown;
+
   private Joystick joy;
-  private Button intakeIn, intakeOut; 
+  
 
   
   
@@ -55,7 +64,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Speed Controller Initialization
+    // DriveTrain
     leftUp = new SteelTalonsController(Constants.LEFT_UP_PORT, false, 1);
     leftDown = new SteelTalonsController(Constants.LEFT_DOWN_PORT, false, 1);
     rightUp = new SteelTalonsController(Constants.RIGHT_UP_PORT, false, 1);
@@ -70,10 +79,16 @@ public class RobotContainer {
 
     driveTrain.setDefaultCommand(new DriveWithJoystick());
 
+    //Intake
     intakeLeft = new SteelTalonsController(Constants.INTAKE_LEFT_PORT, false, 1);
     intakeRight = new SteelTalonsController(Constants.INTAKE_RIGHT_PORT, false, 1);
 
     intake = new Intake(intakeLeft, intakeRight);
+
+    //Arm
+    armPotent = new AnalogPotentiometer(Constants.ARM_POTENT_PORT);
+    armController = new SteelTalonsController(Constants.ARM_CONTROL_PORT, false, 1);
+    arm = new Arm(armController);
 
     //ConfigureButtons
     configureButtonBindings();
@@ -88,11 +103,16 @@ public class RobotContainer {
   private void configureButtonBindings() 
   {
     joy = new Joystick(0);
+
     intakeIn = new JoystickButton(joy, Constants.INTAKE_IN_BUTTON);
     intakeOut = new JoystickButton(joy, Constants.INTAKE_OUT_BUTTON);
-
     intakeIn.whileHeld(new MoveIntake(Constants.INTAKE_IN_SPEED));
     intakeOut.whileHeld(new MoveIntake(Constants.INTAKE_OUT_SPEED));
+
+    armUp = new JoystickButton(joy, Constants.ARM_UP_BUTTON);
+    armDown = new JoystickButton(joy, Constants.ARM_DOWN_BUTTON);
+    armUp.whileHeld(new MoveArm(Constants.ARM_CONTROL_SPEED));
+    armDown.whileHeld(new MoveArm(-Constants.ARM_CONTROL_SPEED));
 
 
 
@@ -122,6 +142,16 @@ public class RobotContainer {
    public Joystick getJoystick()
    {
      return joy;
+   }
+
+   public AnalogPotentiometer getArmPotent()
+   {
+     return armPotent;
+   }
+
+   public Arm getArm()
+   {
+     return arm;
    }
 
 }
