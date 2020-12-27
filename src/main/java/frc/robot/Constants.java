@@ -40,6 +40,13 @@ public final class Constants
     public static final double INTAKE_OUT_SPEED = -0.8;
 
 
+    public static final int SOLENOID_PORT = 16;
+
+    public static final int HATCH_BUTTON_PORT = 17;
+
+    public static final boolean HATCH_DIRECTION = true;
+
+
     public static final int ARM_POTENT_PORT = 6;
 
     public static final int ARM_CONTROL_PORT = 9;

@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
@@ -17,11 +18,13 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.MoveHatch;
 import frc.robot.commands.MoveIntake;
 import frc.robot.commands.MoveWrist;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -48,6 +51,10 @@ public class RobotContainer {
   private SpeedController intakeLeft, intakeRight;
   private Button intakeIn, intakeOut; 
   private Intake intake;
+
+  private Hatch hatch;
+  private Solenoid hatchSol;
+  private Button hatchButton;
 
   private AnalogPotentiometer armPotent;
   private SpeedController armController;
@@ -92,6 +99,10 @@ public class RobotContainer {
     intakeRight = new SteelTalonsController(Constants.INTAKE_RIGHT_PORT, false, 1);
     intake = new Intake(intakeLeft, intakeRight);
 
+    //Hatch Intake
+    hatchSol = new Solenoid(Constants.SOLENOID_PORT);
+    hatch = new Hatch(hatchSol);
+
     //Arm
     armPotent = new AnalogPotentiometer(Constants.ARM_POTENT_PORT);
     armController = new SteelTalonsController(Constants.ARM_CONTROL_PORT, false, 1);
@@ -121,6 +132,9 @@ public class RobotContainer {
     intakeOut = new JoystickButton(joy, Constants.INTAKE_OUT_BUTTON);
     intakeIn.whileHeld(new MoveIntake(Constants.INTAKE_IN_SPEED));
     intakeOut.whileHeld(new MoveIntake(Constants.INTAKE_OUT_SPEED));
+
+    hatchButton = new JoystickButton(joy, Constants.HATCH_BUTTON_PORT);
+    hatchButton.whileHeld(new MoveHatch(hatch, Constants.HATCH_DIRECTION));
 
     armUp = new JoystickButton(joy, Constants.ARM_UP_BUTTON);
     armDown = new JoystickButton(joy, Constants.ARM_DOWN_BUTTON);
@@ -181,6 +195,11 @@ public class RobotContainer {
    public Wrist getWrist()
    {
      return wrist;
+   }
+
+   public Hatch getHatch()
+   {
+     return hatch;
    }
 
 }
