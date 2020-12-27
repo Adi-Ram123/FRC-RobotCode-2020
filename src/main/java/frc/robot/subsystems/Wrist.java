@@ -1,57 +1,58 @@
 package frc.robot.subsystems;
 
+
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class Arm extends SubsystemBase
+public class Wrist extends SubsystemBase
 {
-    private SpeedController armController;
+
+    private SpeedController wristController;
     private boolean top;
     private boolean bottom;
 
-
-    public Arm(SpeedController armController)
+    public Wrist(SpeedController wristController)
     {
-        this.armController = armController;
+        this.wristController = wristController;
     }
 
-    public void moveArm(double speed)
+    public void moveWrist(double speed)
     {
 
-        
         if(speed > 0 && top)
-            armController.set(speed);
+            wristController.set(speed);
 
         else if(speed < 0 && bottom)
-            armController.set(speed);
+            wristController.set(speed);
 
         else
-            stopArm();
+            stopWrist();
 
     }
 
-    public void stopArm()
+    public void stopWrist()
     {
-        armController.set(0);
-
+        wristController.set(0);
     }
 
     @Override
     public void periodic()
     {
-        //TOP and BOTTOM are swapped
-        if(Robot.m_robotContainer.getArmPotent().get() <= Constants.ARM_BOTTOM)
+
+        if(Robot.m_robotContainer.getWristPotent().get() <= Constants.WRIST_BOTTOM)
             top = true;
+        
         else
             top = false;
 
-        if(Robot.m_robotContainer.getArmPotent().get() >= Constants.ARM_TOP)
+        if(Robot.m_robotContainer.getWristPotent().get() >= Constants.WRIST_TOP)
             bottom = true;
-
+        
         else
             bottom = false;
+
     }
 
     public boolean getTop()
@@ -63,7 +64,5 @@ public class Arm extends SubsystemBase
     {
         return bottom;
     }
-    
-
 
 }

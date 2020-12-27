@@ -30,7 +30,10 @@ public class MoveArm extends CommandBase
     public boolean isFinished()
     {
 
-        if(speed > 0)
+        if(!Robot.m_robotContainer.getArm().getTop() || !Robot.m_robotContainer.getArm().getBottom())
+            return true;
+
+        else if(speed > 0)
             return !Robot.m_robotContainer.getJoystick().getRawButtonPressed(Constants.ARM_UP_BUTTON);
 
         else

@@ -54,4 +54,19 @@ public final class Constants
 
     public static final double ARM_CONTROL_SPEED = 0.5;
 
+
+    public static final int WRIST_POTENT_PORT = 12;
+
+    public static final int WRIST_CONTROL_PORT = 13;
+
+    public static final int WRIST_UP_BUTTON = 14;
+
+    public static final int WRIST_DOWN_BUTTON = 15;
+
+    public static final double WRIST_TOP = 5.5;
+
+    public static final double WRIST_BOTTOM = 56.4;
+
+    public static final double WRIST_CONTROL_SPEED = 0.5;
+
 }

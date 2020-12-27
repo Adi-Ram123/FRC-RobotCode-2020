@@ -18,10 +18,12 @@ import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.MoveArm;
 import frc.robot.commands.MoveIntake;
+import frc.robot.commands.MoveWrist;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -52,6 +54,11 @@ public class RobotContainer {
   private Arm arm;
   private Button armUp, armDown;
 
+  private AnalogPotentiometer wristPotent;
+  private SpeedController wristController;
+  private Wrist wrist;
+  private Button wristUp, wristDown;
+
   private Joystick joy;
   
 
@@ -64,6 +71,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
     // DriveTrain
     leftUp = new SteelTalonsController(Constants.LEFT_UP_PORT, false, 1);
     leftDown = new SteelTalonsController(Constants.LEFT_DOWN_PORT, false, 1);
@@ -82,13 +90,18 @@ public class RobotContainer {
     //Intake
     intakeLeft = new SteelTalonsController(Constants.INTAKE_LEFT_PORT, false, 1);
     intakeRight = new SteelTalonsController(Constants.INTAKE_RIGHT_PORT, false, 1);
-
     intake = new Intake(intakeLeft, intakeRight);
 
     //Arm
     armPotent = new AnalogPotentiometer(Constants.ARM_POTENT_PORT);
     armController = new SteelTalonsController(Constants.ARM_CONTROL_PORT, false, 1);
     arm = new Arm(armController);
+
+    //Wrist
+    wristPotent = new AnalogPotentiometer(Constants.WRIST_POTENT_PORT);
+    wristController = new SteelTalonsController(Constants.WRIST_CONTROL_PORT, false, 1);
+    wrist = new Wrist(wristController);
+    
 
     //ConfigureButtons
     configureButtonBindings();
@@ -113,6 +126,12 @@ public class RobotContainer {
     armDown = new JoystickButton(joy, Constants.ARM_DOWN_BUTTON);
     armUp.whileHeld(new MoveArm(Constants.ARM_CONTROL_SPEED));
     armDown.whileHeld(new MoveArm(-Constants.ARM_CONTROL_SPEED));
+
+    wristUp = new JoystickButton(joy, Constants.WRIST_UP_BUTTON);
+    wristDown = new JoystickButton(joy, Constants.WRIST_DOWN_BUTTON);
+    wristUp.whileHeld(new MoveWrist(Constants.WRIST_CONTROL_SPEED));
+    wristDown.whileHeld(new MoveWrist(-Constants.WRIST_CONTROL_SPEED));
+    
 
 
 
@@ -152,6 +171,16 @@ public class RobotContainer {
    public Arm getArm()
    {
      return arm;
+   }
+
+   public AnalogPotentiometer getWristPotent()
+   {
+     return wristPotent;
+   }
+
+   public Wrist getWrist()
+   {
+     return wrist;
    }
 
 }
