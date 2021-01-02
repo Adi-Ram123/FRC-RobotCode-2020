@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -21,6 +22,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   public static RobotContainer m_robotContainer;
+
+  private Timer time = new Timer();
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -77,7 +81,24 @@ public class Robot extends TimedRobot {
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
+  public void autonomousPeriodic() 
+  {
+
+    if(time.get() < 1.0)
+      m_robotContainer.getDriveTrain().moveTankDrive(0.5, 0.5);
+
+    else if(time.get() < 2.0)
+    {
+      m_robotContainer.getDriveTrain().stop();
+      m_robotContainer.getHatch().setHatch(true);
+    }
+
+    else
+    {
+      m_robotContainer.getHatch().setHatch(false);
+      time.reset();
+    }
+    
   }
 
   @Override
